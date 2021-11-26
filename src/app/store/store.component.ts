@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { Cart } from "../model/cart.model";
 import { Product } from "../model/product";
 import { ProductRepository } from "../model/product.repository";
 
@@ -11,7 +12,7 @@ export class StoreComponent {
     public productsPerPage = 10
     public selectedPage = 1
 
-    constructor(private repository: ProductRepository) {}
+    constructor(private repository: ProductRepository, private cart: Cart) {}
 
     get products(): Product[] {
         let pageIndex = (this.selectedPage - 1) * this.productsPerPage;
@@ -41,5 +42,9 @@ export class StoreComponent {
         return Array(
             Math.ceil(this.repository.getProducts(this.selectedCategory).length / this.productsPerPage)
         ).fill(0).map((x, i) => i + 1);
+    }
+
+    addProductToCart(product: Product) {
+        this.cart.addLine(product);
     }
 }
